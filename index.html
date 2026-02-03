@@ -28,6 +28,7 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: var(--picker-dark);
             overflow: hidden;
+            -webkit-text-size-adjust: 100%;
         }
 
         .presentation {
@@ -57,6 +58,15 @@
 
         .slide.prev {
             transform: translateX(-100%);
+        }
+
+        .slide {
+            cursor: grab;
+            user-select: none;
+        }
+
+        .slide:active {
+            cursor: grabbing;
         }
 
         /* Slide 1 - Cover */
@@ -100,6 +110,8 @@
         .slide-content {
             background: white;
             align-items: flex-start;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .slide-header {
@@ -378,6 +390,11 @@
             max-width: 1200px;
         }
 
+        .tarifario-section {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
         .tarifario-section h3 {
             font-size: 1.2rem;
             color: var(--picker-dark);
@@ -387,6 +404,7 @@
 
         .tarifario-table {
             width: 100%;
+            min-width: 320px;
             border-collapse: collapse;
             font-size: 0.85rem;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
@@ -626,7 +644,7 @@
             background: var(--picker-primary);
         }
 
-        /* Responsive */
+        /* Responsive - Tablet */
         @media (max-width: 900px) {
             .slide {
                 padding: 30px;
@@ -636,12 +654,341 @@
                 font-size: 2.5rem;
             }
 
+            .slide-cover h2 {
+                font-size: 1.5rem;
+            }
+
             .how-grid, .pricing-grid, .tarifario-grid {
                 grid-template-columns: 1fr;
             }
 
             .tarifario-notes ul {
                 grid-template-columns: 1fr;
+            }
+
+            .slide-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .nav-controls {
+                bottom: 20px;
+            }
+
+            .slide-dots {
+                right: 20px;
+                bottom: 20px;
+            }
+
+            .slide-number {
+                right: 20px;
+                top: 20px;
+            }
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px 15px;
+                padding-bottom: 100px;
+            }
+
+            .slide-cover {
+                padding: 20px;
+            }
+
+            .slide-cover h1 {
+                font-size: 2rem;
+            }
+
+            .slide-cover h2 {
+                font-size: 1.2rem;
+                margin-bottom: 20px;
+            }
+
+            .slide-cover .alliance {
+                font-size: 1rem;
+            }
+
+            .slide-header {
+                margin-bottom: 25px;
+            }
+
+            .slide-header h2 {
+                font-size: 1.4rem;
+            }
+
+            .slide-header .accent {
+                width: 4px;
+                height: 40px;
+                margin-right: 12px;
+            }
+
+            .problem-item h3 {
+                font-size: 1.1rem;
+            }
+
+            .problem-item p {
+                font-size: 0.9rem;
+                padding-left: 10px;
+            }
+
+            .solution-banner {
+                padding: 20px;
+                font-size: 1rem;
+                margin-top: 20px;
+            }
+
+            .how-column h3,
+            .pricing-column h3,
+            .tarifario-section h3 {
+                font-size: 1.1rem;
+            }
+
+            .feature-list li {
+                font-size: 0.9rem;
+                padding: 8px 0;
+            }
+
+            .config-example {
+                padding: 15px;
+            }
+
+            .config-level {
+                font-size: 0.85rem;
+            }
+
+            .benefits-box {
+                padding: 20px;
+            }
+
+            .benefits-box li {
+                font-size: 0.9rem;
+            }
+
+            /* Tables scroll horizontally on mobile */
+            .pricing-column,
+            .tarifario-section {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .pricing-table,
+            .tarifario-table {
+                min-width: 280px;
+                font-size: 0.8rem;
+            }
+
+            .pricing-table th,
+            .pricing-table td {
+                padding: 10px 12px;
+            }
+
+            .tarifario-table th,
+            .tarifario-table td {
+                padding: 6px 4px;
+                font-size: 0.7rem;
+            }
+
+            .rates-box {
+                padding: 15px;
+            }
+
+            .rate-section h4 {
+                font-size: 0.9rem;
+            }
+
+            .rate-section p {
+                font-size: 0.85rem;
+            }
+
+            .tariff-note {
+                font-size: 0.8rem;
+                padding: 12px 15px;
+            }
+
+            /* CTA slide */
+            .slide-cta h1 {
+                font-size: 2rem;
+            }
+
+            .slide-cta h3 {
+                font-size: 1.1rem;
+            }
+
+            .steps-list li {
+                font-size: 1rem;
+                padding: 10px 0;
+            }
+
+            .contact-box {
+                padding: 20px 25px;
+            }
+
+            .contact-box h4 {
+                font-size: 1.2rem;
+            }
+
+            .contact-box p {
+                font-size: 0.85rem;
+            }
+
+            /* Navigation - larger touch targets */
+            .nav-controls {
+                bottom: 15px;
+                gap: 20px;
+            }
+
+            .nav-btn {
+                width: 55px;
+                height: 55px;
+                font-size: 1.6rem;
+            }
+
+            .slide-dots {
+                bottom: 80px;
+                right: 50%;
+                transform: translateX(50%);
+            }
+
+            .dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            .slide-number {
+                top: 15px;
+                right: 15px;
+                font-size: 0.85rem;
+            }
+
+            .keyboard-hint {
+                display: none;
+            }
+
+            .tarifario-notes {
+                padding: 15px;
+            }
+
+            .tarifario-notes li {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Responsive - Small Mobile */
+        @media (max-width: 480px) {
+            .slide {
+                padding: 15px 12px;
+                padding-bottom: 110px;
+            }
+
+            .slide-cover h1 {
+                font-size: 1.6rem;
+            }
+
+            .slide-cover h2 {
+                font-size: 1rem;
+            }
+
+            .slide-header h2 {
+                font-size: 1.2rem;
+            }
+
+            .problem-item h3 {
+                font-size: 1rem;
+            }
+
+            .problem-item p {
+                font-size: 0.85rem;
+            }
+
+            .solution-banner {
+                padding: 15px;
+                font-size: 0.9rem;
+                border-radius: 8px;
+            }
+
+            .how-grid,
+            .pricing-grid {
+                gap: 25px;
+            }
+
+            .tarifario-grid {
+                gap: 20px;
+            }
+
+            .tarifario-table th,
+            .tarifario-table td {
+                padding: 5px 3px;
+                font-size: 0.65rem;
+            }
+
+            .slide-cta h1 {
+                font-size: 1.6rem;
+            }
+
+            .steps-list li {
+                font-size: 0.9rem;
+                padding: 8px 0;
+            }
+
+            .contact-box {
+                padding: 15px 20px;
+            }
+
+            .contact-box h4 {
+                font-size: 1rem;
+            }
+
+            .contact-box p {
+                font-size: 0.8rem;
+                word-break: break-word;
+            }
+
+            .nav-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.4rem;
+            }
+        }
+
+        /* Landscape mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .slide {
+                padding: 15px 30px;
+                padding-bottom: 70px;
+                overflow-y: auto;
+            }
+
+            .slide-cover h1 {
+                font-size: 1.8rem;
+                margin-bottom: 5px;
+            }
+
+            .slide-cover h2 {
+                font-size: 1rem;
+                margin-bottom: 10px;
+            }
+
+            .slide-cover .divider {
+                margin: 10px auto;
+            }
+
+            .slide-header {
+                margin-bottom: 15px;
+            }
+
+            .nav-controls {
+                bottom: 10px;
+            }
+
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .slide-dots {
+                bottom: 10px;
             }
         }
 
@@ -1062,24 +1409,71 @@
             }
         });
 
-        // Touch support
-        let touchStartX = 0;
-        let touchEndX = 0;
+        // Touch & Mouse swipe support
+        let startX = 0;
+        let startY = 0;
+        let endX = 0;
+        let endY = 0;
+        let isDragging = false;
 
+        // Touch events
         document.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
+            startX = e.changedTouches[0].screenX;
+            startY = e.changedTouches[0].screenY;
+        }, { passive: true });
 
         document.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
+            endX = e.changedTouches[0].screenX;
+            endY = e.changedTouches[0].screenY;
+            handleSwipe(e.target);
+        }, { passive: true });
+
+        // Mouse events for desktop drag/swipe
+        document.addEventListener('mousedown', (e) => {
+            // Ignore if clicking on buttons or navigation
+            if (e.target.closest('.nav-btn, .dot, .nav-controls, .slide-dots')) return;
+            isDragging = true;
+            startX = e.screenX;
+            startY = e.screenY;
+            document.body.style.cursor = 'grabbing';
         });
 
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            if (touchStartX - touchEndX > swipeThreshold) {
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+        });
+
+        document.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            endX = e.screenX;
+            endY = e.screenY;
+            document.body.style.cursor = '';
+            handleSwipe(e.target);
+        });
+
+        // Prevent drag on leave
+        document.addEventListener('mouseleave', () => {
+            if (isDragging) {
+                isDragging = false;
+                document.body.style.cursor = '';
+            }
+        });
+
+        function handleSwipe(target) {
+            const swipeThreshold = 80;
+            const verticalThreshold = 100;
+
+            const horizontalDiff = startX - endX;
+            const verticalDiff = Math.abs(startY - endY);
+
+            // Only handle horizontal swipes, ignore if scrolling vertically or on scrollable elements
+            if (verticalDiff > verticalThreshold) return;
+            if (target.closest && target.closest('.tarifario-section, .pricing-column, .slide-content table')) return;
+
+            if (horizontalDiff > swipeThreshold) {
                 nextSlide();
-            } else if (touchEndX - touchStartX > swipeThreshold) {
+            } else if (horizontalDiff < -swipeThreshold) {
                 prevSlide();
             }
         }
