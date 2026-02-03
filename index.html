@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta Picker × Otter - México</title>
+    <style>
+        :root {
+            --picker-primary: #00B4D8;
+            --picker-primary-dark: #0096B4;
+            --picker-dark: #1A1A2E;
+            --picker-text: #4A4A5A;
+            --picker-gray: #6B7280;
+            --picker-green-bg: #D1FAE5;
+            --picker-green: #10B981;
+            --picker-yellow-bg: #FEF3C7;
+            --picker-yellow: #F59E0B;
+            --picker-light-bg: #F8FAFB;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--picker-dark);
+            overflow: hidden;
+        }
+
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 40px 60px;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+
+        /* Slide 1 - Cover */
+        .slide-cover {
+            background: linear-gradient(135deg, var(--picker-primary) 0%, var(--picker-primary-dark) 100%);
+            text-align: center;
+        }
+
+        .slide-cover h1 {
+            font-size: 4rem;
+            color: white;
+            font-weight: 700;
+            margin-bottom: 10px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .slide-cover h2 {
+            font-size: 2rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 400;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .slide-cover .divider {
+            width: 150px;
+            height: 3px;
+            background: white;
+            margin: 20px auto;
+            animation: scaleIn 0.6s ease-out 0.4s both;
+        }
+
+        .slide-cover .alliance {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.8);
+            font-style: italic;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        /* Content slides */
+        .slide-content {
+            background: white;
+            align-items: flex-start;
+        }
+
+        .slide-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .slide-header .accent {
+            width: 6px;
+            height: 50px;
+            background: var(--picker-primary);
+            margin-right: 20px;
+            border-radius: 3px;
+        }
+
+        .slide-header h2 {
+            font-size: 2.2rem;
+            color: var(--picker-primary);
+            font-weight: 700;
+        }
+
+        /* Problem slide */
+        .problems-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .problem-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        .problem-item:nth-child(1) { animation-delay: 0.2s; }
+        .problem-item:nth-child(2) { animation-delay: 0.4s; }
+        .problem-item:nth-child(3) { animation-delay: 0.6s; }
+
+        .problem-item h3 {
+            font-size: 1.3rem;
+            color: var(--picker-dark);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .problem-item p {
+            font-size: 1rem;
+            color: var(--picker-text);
+            padding-left: 20px;
+            line-height: 1.6;
+        }
+
+        .solution-banner {
+            background: var(--picker-primary);
+            color: white;
+            padding: 25px 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            animation: fadeInUp 0.5s ease-out 0.8s both;
+            box-shadow: 0 10px 30px rgba(0, 180, 216, 0.3);
+        }
+
+        /* How it works slide */
+        .how-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .how-column h3 {
+            font-size: 1.3rem;
+            color: var(--picker-dark);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            color: var(--picker-text);
+            font-size: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .feature-list li::before {
+            content: "○";
+            color: var(--picker-primary);
+            font-weight: bold;
+        }
+
+        .config-example {
+            background: var(--picker-light-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .config-example h4 {
+            font-size: 0.9rem;
+            color: var(--picker-gray);
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+
+        .config-level {
+            padding: 6px 0;
+            color: var(--picker-gray);
+            font-size: 0.95rem;
+        }
+
+        .benefits-box {
+            background: var(--picker-green-bg);
+            border-left: 5px solid var(--picker-green);
+            padding: 25px;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .benefits-box h3 {
+            color: var(--picker-dark);
+            margin-bottom: 15px;
+        }
+
+        .benefits-box ul {
+            list-style: none;
+        }
+
+        .benefits-box li {
+            padding: 8px 0;
+            color: var(--picker-text);
+            font-size: 1rem;
+        }
+
+        .benefits-box li::before {
+            content: "✓";
+            color: var(--picker-green);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .benefits-box .highlight {
+            font-weight: 700;
+        }
+
+        .benefits-box .sub {
+            color: var(--picker-gray);
+            font-size: 0.9rem;
+            padding-left: 25px;
+        }
+
+        /* Pricing slide */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .pricing-column h3 {
+            font-size: 1.3rem;
+            color: var(--picker-dark);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .pricing-column .subtitle {
+            font-size: 0.9rem;
+            color: var(--picker-gray);
+            margin-bottom: 20px;
+        }
+
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .pricing-table th {
+            background: var(--picker-primary);
+            color: white;
+            padding: 14px 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .pricing-table td {
+            padding: 12px 20px;
+            border-bottom: 1px solid #E5E7EB;
+            color: var(--picker-dark);
+        }
+
+        .pricing-table tr:nth-child(even) {
+            background: #F9FAFB;
+        }
+
+        .pricing-notes {
+            margin-top: 20px;
+        }
+
+        .pricing-notes li {
+            padding: 5px 0;
+            color: var(--picker-text);
+            font-size: 0.95rem;
+            list-style: none;
+        }
+
+        .pricing-notes li::before {
+            content: "○";
+            color: var(--picker-primary);
+            margin-right: 8px;
+        }
+
+        .rates-box {
+            background: var(--picker-light-bg);
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .rate-section {
+            margin-bottom: 20px;
+        }
+
+        .rate-section h4 {
+            color: var(--picker-primary);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .rate-section p {
+            color: var(--picker-text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .rate-example {
+            color: var(--picker-gray);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .tariff-note {
+            background: var(--picker-yellow-bg);
+            border-left: 4px solid var(--picker-yellow);
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: var(--picker-dark);
+        }
+
+        /* Tarifario slide */
+        .tarifario-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .tarifario-section h3 {
+            font-size: 1.2rem;
+            color: var(--picker-dark);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .tarifario-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .tarifario-table th {
+            background: var(--picker-primary);
+            color: white;
+            padding: 10px 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .tarifario-table td {
+            padding: 8px;
+            border-bottom: 1px solid #E5E7EB;
+            text-align: center;
+            color: var(--picker-dark);
+        }
+
+        .tarifario-table tr:nth-child(even) {
+            background: #F9FAFB;
+        }
+
+        .tarifario-table tr:last-child {
+            background: var(--picker-light-bg);
+            font-weight: 600;
+        }
+
+        .tarifario-notes {
+            grid-column: 1 / -1;
+            background: var(--picker-light-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .tarifario-notes ul {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .tarifario-notes li {
+            color: var(--picker-text);
+            font-size: 0.9rem;
+        }
+
+        .tarifario-notes li::before {
+            content: "○";
+            color: var(--picker-primary);
+            margin-right: 8px;
+        }
+
+        /* CTA slide */
+        .slide-cta {
+            background: linear-gradient(135deg, var(--picker-primary) 0%, var(--picker-primary-dark) 100%);
+            text-align: center;
+        }
+
+        .slide-cta h1 {
+            font-size: 3.5rem;
+            color: white;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .slide-cta .divider {
+            width: 150px;
+            height: 3px;
+            background: white;
+            margin: 25px auto;
+        }
+
+        .slide-cta h3 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+        }
+
+        .steps-list {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+
+        .steps-list li {
+            color: white;
+            font-size: 1.2rem;
+            padding: 12px 0;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        .steps-list li:nth-child(1) { animation-delay: 0.3s; }
+        .steps-list li:nth-child(2) { animation-delay: 0.5s; }
+        .steps-list li:nth-child(3) { animation-delay: 0.7s; }
+
+        .contact-box {
+            background: white;
+            padding: 30px 50px;
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.6s ease-out 0.9s both;
+        }
+
+        .contact-box h4 {
+            color: var(--picker-primary);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .contact-box p {
+            color: var(--picker-primary);
+            font-size: 1rem;
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            color: var(--picker-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-dots {
+            position: fixed;
+            bottom: 30px;
+            right: 40px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        .slide-content .dot {
+            background: rgba(0,180,216,0.3);
+        }
+
+        .slide-content .dot.active {
+            background: var(--picker-primary);
+        }
+
+        .slide-number {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+            z-index: 100;
+        }
+
+        .slide-content .slide-number {
+            color: var(--picker-gray);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scaleX(0);
+            }
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--picker-primary);
+            z-index: 200;
+            transition: width 0.3s ease;
+        }
+
+        .slide-content .progress-bar {
+            background: var(--picker-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .slide {
+                padding: 30px;
+            }
+
+            .slide-cover h1 {
+                font-size: 2.5rem;
+            }
+
+            .how-grid, .pricing-grid, .tarifario-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tarifario-notes ul {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Keyboard hint */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+
+        .keyboard-hint.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="presentation">
+        <!-- Slide 1: Cover -->
+        <div class="slide slide-cover active" data-slide="1">
+            <h1>Propuesta de Delivery</h1>
+            <h2>para Clientes Otter</h2>
+            <div class="divider"></div>
+            <p class="alliance">Alianza Otter x Picker</p>
+        </div>
+
+        <!-- Slide 2: Problem -->
+        <div class="slide slide-content" data-slide="2">
+            <div class="slide-header">
+                <div class="accent"></div>
+                <h2>El problema con delivery hoy</h2>
+            </div>
+            <div class="problems-grid">
+                <div class="problem-item">
+                    <h3>1. Apps con comisiones altas</h3>
+                    <p>Uber Eats, Rappi, DiDi cobran 25-30% de comision. Para reducir costos, necesitas alternativas de ultima milla.</p>
+                </div>
+                <div class="problem-item">
+                    <h3>2. Un solo proveedor 3PL = mal fulfillment</h3>
+                    <p>Si contratas una sola flota, cuando no hay disponibilidad pierdes el pedido. Tipicamente 10% de pedidos no se cumplen.</p>
+                </div>
+                <div class="problem-item">
+                    <h3>3. Flota propia = caro y no escala</h3>
+                    <p>Tener conductores fijos da control, pero el costo por envio es muy alto y no puedes escalar en picos de demanda.</p>
+                </div>
+            </div>
+            <div class="solution-banner">
+                Picker = modelo hibrido que optimiza costo y cumplimiento
+            </div>
+        </div>
+
+        <!-- Slide 3: How it works -->
+        <div class="slide slide-content" data-slide="3">
+            <div class="slide-header">
+                <div class="accent"></div>
+                <h2>Como funciona Picker</h2>
+            </div>
+            <div class="how-grid">
+                <div class="how-column">
+                    <h3>Orquestacion inteligente</h3>
+                    <ul class="feature-list">
+                        <li>Una sola API, +10 proveedores (Uber, Rappi, Cabify, flotillas)</li>
+                        <li>Configuras prioridades segun tu operacion</li>
+                        <li>Si uno no tiene disponibilidad, pasa al siguiente</li>
+                        <li>Tracking white label con tu marca y colores</li>
+                    </ul>
+                    <div class="config-example">
+                        <h4>Ejemplo de configuracion:</h4>
+                        <div class="config-level">Nivel 1: Tu flota propia (5 min)</div>
+                        <div class="config-level">Nivel 2: Uber + Rappi (simultaneo)</div>
+                        <div class="config-level">Nivel 3: Flotilla local de respaldo</div>
+                    </div>
+                </div>
+                <div class="how-column">
+                    <div class="benefits-box">
+                        <h3>Beneficio por alianza Otter</h3>
+                        <ul>
+                            <li><span class="highlight">Sin tarifa fija por local</span></li>
+                            <li class="sub">(normalmente $500 MXN/local)</li>
+                            <li><span class="highlight">Solo pagas por envio realizado</span></li>
+                            <li><span class="highlight">Integracion con Otter ya lista</span></li>
+                            <li><span class="highlight">Si ya tienes tarifa negociada con Uber/Rappi, Picker puede usarla</span></li>
+                        </ul>
+                    </div>
+                    <p style="margin-top: 20px; font-size: 0.9rem; color: var(--picker-gray); font-style: italic;">
+                        Si ya tienes flota propia, Picker le da tecnologia (app, panel) y la integra al orquestador.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Pricing -->
+        <div class="slide slide-content" data-slide="4">
+            <div class="slide-header">
+                <div class="accent"></div>
+                <h2>Propuesta comercial - Mexico</h2>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-column">
+                    <h3>Fee de orquestacion</h3>
+                    <p class="subtitle">Segun volumen mensual del cliente</p>
+                    <table class="pricing-table">
+                        <tr>
+                            <th>Volumen mensual</th>
+                            <th>Fee/envio</th>
+                        </tr>
+                        <tr>
+                            <td>0 - 5,000 envios</td>
+                            <td><strong>$4.00 MXN</strong></td>
+                        </tr>
+                        <tr>
+                            <td>5,001 - 15,000 envios</td>
+                            <td><strong>$3.00 MXN</strong></td>
+                        </tr>
+                        <tr>
+                            <td>15,001 - 30,000 envios</td>
+                            <td><strong>$2.40 MXN</strong></td>
+                        </tr>
+                        <tr>
+                            <td>30,001+ envios</td>
+                            <td><strong>$2.00 MXN</strong></td>
+                        </tr>
+                    </table>
+                    <ul class="pricing-notes">
+                        <li>Sin mensualidad fija (beneficio Otter)</li>
+                        <li>Sin costo de integracion</li>
+                        <li>Incluye tracking white label</li>
+                    </ul>
+                </div>
+                <div class="pricing-column">
+                    <h3>Tasa de entrega (proveedores)</h3>
+                    <p class="subtitle">Se cobra por proveedor y distancia</p>
+                    <div class="rates-box">
+                        <div class="rate-section">
+                            <h4>Moto (2W) - Promedio CDMX:</h4>
+                            <p>Base (0-3 km): ~$56 MXN + ~$9.50 MXN/km adicional</p>
+                            <p class="rate-example">Ej: envio de 5 km ≈ $75 MXN promedio</p>
+                        </div>
+                        <div class="rate-section">
+                            <h4>Auto (4W) - Promedio CDMX:</h4>
+                            <p>Base (0-3 km): ~$83 MXN + ~$11.40 MXN/km adicional</p>
+                            <p class="rate-example">Ej: envio de 5 km ≈ $106 MXN promedio</p>
+                        </div>
+                    </div>
+                    <div class="tariff-note">
+                        Si ya tienes tarifa negociada con Uber/Rappi, podemos usar tu tarifa directamente.
+                    </div>
+                </div>
+            </div>
+            <p style="margin-top: 25px; font-size: 0.85rem; color: var(--picker-gray); font-style: italic; text-align: center;">
+                Modulos opcionales disponibles: Cash, Support, Analytics, Flows, Shield - consultar segun necesidad.
+            </p>
+        </div>
+
+        <!-- Slide 5: Tarifario -->
+        <div class="slide slide-content" data-slide="5">
+            <div class="slide-header">
+                <div class="accent"></div>
+                <h2>Tarifario proveedores - Mexico CDMX (enero 2026)</h2>
+            </div>
+            <div class="tarifario-grid">
+                <div class="tarifario-section">
+                    <h3>Moto (2W) - Precios en MXN</h3>
+                    <table class="tarifario-table">
+                        <tr>
+                            <th>Distancia</th>
+                            <th>Uber</th>
+                            <th>Rappi</th>
+                            <th>Lalamove</th>
+                            <th>GetJusto</th>
+                            <th>MU</th>
+                            <th>Pibox</th>
+                        </tr>
+                        <tr>
+                            <td>0-3 km</td>
+                            <td>$52</td>
+                            <td>$54</td>
+                            <td>$60</td>
+                            <td>$40</td>
+                            <td>$86</td>
+                            <td>$45</td>
+                        </tr>
+                        <tr>
+                            <td>4 km</td>
+                            <td>$58.80</td>
+                            <td>$67.20</td>
+                            <td>$72.45</td>
+                            <td>$49.35</td>
+                            <td>$102.30</td>
+                            <td>$60.90</td>
+                        </tr>
+                        <tr>
+                            <td>5 km</td>
+                            <td>$63</td>
+                            <td>$77.70</td>
+                            <td>$81.90</td>
+                            <td>$56.70</td>
+                            <td>$114.30</td>
+                            <td>$74.55</td>
+                        </tr>
+                        <tr>
+                            <td>6 km</td>
+                            <td>$67.20</td>
+                            <td>$88.20</td>
+                            <td>$91.35</td>
+                            <td>$64.05</td>
+                            <td>$126.30</td>
+                            <td>$88.20</td>
+                        </tr>
+                        <tr>
+                            <td>7 km</td>
+                            <td>$71.40</td>
+                            <td>$98.70</td>
+                            <td>$100.80</td>
+                            <td>$71.40</td>
+                            <td>$138.30</td>
+                            <td>$101.85</td>
+                        </tr>
+                        <tr>
+                            <td>Km extra</td>
+                            <td>$4.20</td>
+                            <td>$10.50</td>
+                            <td>$9.45</td>
+                            <td>$7.35</td>
+                            <td>$12.00</td>
+                            <td>$13.65</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="tarifario-section">
+                    <h3>Auto (4W) - Precios en MXN</h3>
+                    <table class="tarifario-table">
+                        <tr>
+                            <th>Distancia</th>
+                            <th>Uber</th>
+                            <th>Rappi</th>
+                            <th>Lalamove</th>
+                        </tr>
+                        <tr>
+                            <td>0-3 km</td>
+                            <td>$75</td>
+                            <td>$99.90</td>
+                            <td>$75</td>
+                        </tr>
+                        <tr>
+                            <td>4 km</td>
+                            <td>$82.95</td>
+                            <td>$124.32</td>
+                            <td>$89.25</td>
+                        </tr>
+                        <tr>
+                            <td>5 km</td>
+                            <td>$87.15</td>
+                            <td>$143.75</td>
+                            <td>$99.75</td>
+                        </tr>
+                        <tr>
+                            <td>6 km</td>
+                            <td>$91.35</td>
+                            <td>$163.17</td>
+                            <td>$110.25</td>
+                        </tr>
+                        <tr>
+                            <td>7 km</td>
+                            <td>$95.55</td>
+                            <td>$182.60</td>
+                            <td>$120.75</td>
+                        </tr>
+                        <tr>
+                            <td>8 km</td>
+                            <td>$99.75</td>
+                            <td>$202.02</td>
+                            <td>$131.25</td>
+                        </tr>
+                        <tr>
+                            <td>9 km</td>
+                            <td>$103.95</td>
+                            <td>$221.45</td>
+                            <td>$141.75</td>
+                        </tr>
+                        <tr>
+                            <td>10 km</td>
+                            <td>$108.15</td>
+                            <td>$240.87</td>
+                            <td>$152.25</td>
+                        </tr>
+                        <tr>
+                            <td>Km extra</td>
+                            <td>$4.20</td>
+                            <td>$19.43</td>
+                            <td>$10.50</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="tarifario-notes">
+                    <ul>
+                        <li>Tarifa cobrada por proveedor y distancia</li>
+                        <li>Picker cobra la tasa de entrega al restaurante</li>
+                        <li>El fee de Picker ($2 - $4 MXN) se suma aparte</li>
+                        <li>Si ya tienes tarifa negociada, podemos usarla</li>
+                        <li>Tarifas sujetas a cambio por proveedor</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: CTA -->
+        <div class="slide slide-cta" data-slide="6">
+            <h1>¿Te interesa?</h1>
+            <div class="divider"></div>
+            <h3>Proximos pasos:</h3>
+            <ul class="steps-list">
+                <li>1. Demo tecnica - 30 min para ver la plataforma</li>
+                <li>2. Configuracion - Definimos proveedores y reglas</li>
+                <li>3. Go-live - En 2 semanas estas operando</li>
+            </ul>
+            <div class="contact-box">
+                <h4>Antonio Pazmino</h4>
+                <p>antonio@pickerexpress.com | WhatsApp: +593 994 348 328</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn" onclick="prevSlide()">&#8592;</button>
+        <button class="nav-btn" id="nextBtn" onclick="nextSlide()">&#8594;</button>
+    </div>
+
+    <div class="slide-dots" id="slideDots"></div>
+    <div class="slide-number" id="slideNumber">1 / 6</div>
+    <div class="keyboard-hint" id="keyboardHint">Usa las flechas del teclado o haz click para navegar</div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+
+        // Initialize dots
+        const dotsContainer = document.getElementById('slideDots');
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.onclick = () => goToSlide(i);
+            dotsContainer.appendChild(dot);
+        }
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else if (index < currentSlide) {
+                    slide.classList.add('prev');
+                }
+            });
+
+            // Update dots
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+
+            // Update slide number
+            document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${totalSlides}`;
+
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlide();
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                goToSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                goToSlide(totalSlides - 1);
+            }
+        });
+
+        // Touch support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchStartX - touchEndX > swipeThreshold) {
+                nextSlide();
+            } else if (touchEndX - touchStartX > swipeThreshold) {
+                prevSlide();
+            }
+        }
+
+        // Show keyboard hint briefly
+        setTimeout(() => {
+            document.getElementById('keyboardHint').classList.add('show');
+            setTimeout(() => {
+                document.getElementById('keyboardHint').classList.remove('show');
+            }, 4000);
+        }, 1000);
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>
