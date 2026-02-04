@@ -628,7 +628,7 @@
       <h2 class="form-title">¿Quieres <span class="accent">adelantar</span> el contacto?</h2>
       <p class="form-subtitle">Tú mismo hazlo. Nosotros nos encargamos del resto.</p>
 
-      <form class="referral-form" action="https://formspree.io/f/TU_FORM_ID" method="POST">
+      <form class="referral-form" id="referralForm" onsubmit="submitForm(event)">
         <div class="form-row">
           <div class="form-group">
             <label for="nombre">Nombre del contacto *</label>
@@ -830,6 +830,56 @@
       toggle.childNodes[0].textContent = isOpen
         ? 'Ver Términos y Condiciones del Programa '
         : 'Ocultar Términos y Condiciones del Programa ';
+    }
+
+    // ── Form submission ──
+    async function submitForm(e) {
+      e.preventDefault();
+      const form = document.getElementById('referralForm');
+      const btn = form.querySelector('.form-submit');
+      const originalText = btn.textContent;
+
+      btn.textContent = 'Enviando...';
+      btn.disabled = true;
+
+      const data = {
+        nombre: form.nombre.value,
+        empresa: form.empresa.value,
+        telefono: form.telefono.value,
+        email: form.email.value,
+        pedidos_mes: form.pedidos.value,
+        logistica_actual: form.logistica.value,
+        comentario: form.comentario.value
+      };
+
+      try {
+        await fetch('https://script.google.com/a/macros/pickerexpress.com/s/AKfycbykQfrzzmJNhLvO2EBEhKua75tJavmgI6ZIM5QgWFAxQGgLmJgaIvDFtl7kmCYe7zKF/exec', {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        btn.textContent = '¡Enviado!';
+        btn.style.background = 'linear-gradient(135deg, #10B981 0%, #059669 100%)';
+        form.reset();
+
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
+
+      } catch (error) {
+        btn.textContent = 'Error - Intenta de nuevo';
+        btn.style.background = 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)';
+        btn.disabled = false;
+
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = '';
+        }, 3000);
+      }
     }
   </script>
 </body>
