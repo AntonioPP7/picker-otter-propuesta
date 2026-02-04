@@ -405,20 +405,58 @@
       background: radial-gradient(circle, rgba(0,180,216,0.06) 0%, transparent 70%);
       pointer-events: none;
     }
+    .slide-form .orb-2 {
+      position: absolute; bottom: -100px; right: -100px;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,180,216,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
     .form-content {
-      max-width: 600px; width: 100%;
+      max-width: 1100px; width: 100%;
       position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .form-left {
+      text-align: left;
     }
     .form-title {
-      font-size: clamp(24px, 4vw, 36px);
+      font-size: clamp(28px, 4vw, 42px);
       font-weight: 800; color: #1A1A2E;
-      text-align: center; margin-bottom: 8px;
+      text-align: left; margin-bottom: 16px;
       letter-spacing: -1px;
+      line-height: 1.15;
     }
     .form-title .accent { color: #00B4D8; }
     .form-subtitle {
-      font-size: 15px; color: #6B7280;
-      text-align: center; margin-bottom: 32px;
+      font-size: 16px; color: #6B7280;
+      text-align: left; margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .form-benefits {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .form-benefits li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: #4A4A5A;
+      margin-bottom: 14px;
+    }
+    .form-benefits li span {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, #E0F7FA, #B2EBF2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
     }
     .referral-form {
       background: white;
@@ -514,6 +552,11 @@
       .step-arrow { font-size: 20px; }
       .form-row { grid-template-columns: 1fr; }
       .referral-form { padding: 24px; }
+      .form-content { grid-template-columns: 1fr; gap: 32px; }
+      .form-left { text-align: center; }
+      .form-title { text-align: center; }
+      .form-subtitle { text-align: center; }
+      .form-benefits { display: none; }
     }
   </style>
 </head>
@@ -624,9 +667,17 @@
   <!-- ═══ SLIDE 3: FORM ═══ -->
   <section class="slide slide-form" id="slide-2">
     <div class="orb-1"></div>
+    <div class="orb-2"></div>
     <div class="form-content anim-hidden" data-anim="fadeInUp">
-      <h2 class="form-title">¿Quieres <span class="accent">adelantar</span> el contacto?</h2>
-      <p class="form-subtitle">Tú mismo hazlo. Nosotros nos encargamos del resto.</p>
+      <div class="form-left">
+        <h2 class="form-title">¿Quieres <span class="accent">adelantar</span> el contacto?</h2>
+        <p class="form-subtitle">Completa el formulario y nuestro equipo comercial se encargará del resto.</p>
+        <ul class="form-benefits">
+          <li><span>1</span> Tú compartes el contacto</li>
+          <li><span>2</span> Nosotros hacemos el seguimiento</li>
+          <li><span>3</span> Ganas $2,000 USD cuando cierre</li>
+        </ul>
+      </div>
 
       <form class="referral-form" id="referralForm" onsubmit="submitForm(event)">
         <!-- Referidor -->
@@ -698,9 +749,8 @@
         </div>
 
         <button type="submit" class="form-submit">Enviar Referido</button>
+        <p class="form-note">Tu información será enviada a nuestro equipo comercial para dar seguimiento.</p>
       </form>
-
-      <p class="form-note">Tu información será enviada a nuestro equipo comercial para dar seguimiento.</p>
     </div>
   </section>
 
