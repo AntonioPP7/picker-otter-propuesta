@@ -857,7 +857,7 @@
       btn.textContent = 'Enviando...';
       btn.disabled = true;
 
-      const data = {
+      const data = new URLSearchParams({
         referidor_nombre: form.referidor_nombre.value,
         referidor_empresa: form.referidor_empresa.value,
         nombre: form.nombre.value,
@@ -865,16 +865,14 @@
         telefono: form.telefono.value,
         email: form.email.value,
         pedidos_mes: form.pedidos.value,
-        logistica_actual: form.logistica.value,
-        comentario: form.comentario.value
-      };
+        logistica_actual: form.logistica.value || '',
+        comentario: form.comentario.value || ''
+      });
 
       try {
-        await fetch('https://script.google.com/a/macros/pickerexpress.com/s/AKfycby4VakCbQH8iHGFnPRuRvn6M6hw-LvmppYhl0DtG1wLvbOXJ_xHAr2TqQdzhjftmYZj/exec', {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
+        await fetch('https://script.google.com/a/macros/pickerexpress.com/s/AKfycbxeDD-v3vHC-DHwYqgbeCvUNiWNpCvyy8fUJ2Ckr3kBVSFyEtorAU6CWF0JZrbRfKT5/exec?' + data.toString(), {
+          method: 'GET',
+          mode: 'no-cors'
         });
 
         btn.textContent = '¡Enviado!';
