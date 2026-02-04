@@ -395,6 +395,114 @@
       opacity: 0.3; color: white;
     }
 
+    /* ── SLIDE 4: FORM ── */
+    .slide-form {
+      background: linear-gradient(160deg, #F0FDFF 0%, #FFFFFF 40%, #F8FAFB 100%);
+    }
+    .slide-form .orb-1 {
+      position: absolute; top: -80px; left: -80px;
+      width: 350px; height: 350px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,180,216,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .form-content {
+      max-width: 600px; width: 100%;
+      position: relative; z-index: 1;
+    }
+    .form-title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800; color: #1A1A2E;
+      text-align: center; margin-bottom: 8px;
+      letter-spacing: -1px;
+    }
+    .form-title .accent { color: #00B4D8; }
+    .form-subtitle {
+      font-size: 15px; color: #6B7280;
+      text-align: center; margin-bottom: 32px;
+    }
+    .referral-form {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      border: 1px solid #E8EDF2;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .form-row.full {
+      grid-template-columns: 1fr;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #4A4A5A;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 14px 16px;
+      border: 1px solid #E8EDF2;
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      background: #FAFCFD;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #00B4D8;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(0,180,216,0.1);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .form-group select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+    .form-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #00B4D8 0%, #0096B4 100%);
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(0,180,216,0.25);
+      font-family: inherit;
+      margin-top: 8px;
+    }
+    .form-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,180,216,0.35);
+    }
+    .form-note {
+      font-size: 12px;
+      color: #9CA3AF;
+      text-align: center;
+      margin-top: 16px;
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       .nav-dots { right: 12px; }
@@ -404,6 +512,8 @@
       .cta-btn { padding: 16px 32px; font-size: 15px; }
       .step { padding: 0 12px; }
       .step-arrow { font-size: 20px; }
+      .form-row { grid-template-columns: 1fr; }
+      .referral-form { padding: 24px; }
     }
   </style>
 </head>
@@ -414,6 +524,7 @@
     <button class="nav-dot active" data-slide="0" aria-label="Slide 1"></button>
     <button class="nav-dot" data-slide="1" aria-label="Slide 2"></button>
     <button class="nav-dot" data-slide="2" aria-label="Slide 3"></button>
+    <button class="nav-dot" data-slide="3" aria-label="Slide 4"></button>
   </div>
 
   <!-- ═══ SLIDE 1: HOOK ═══ -->
@@ -510,8 +621,76 @@
     </div>
   </section>
 
-  <!-- ═══ SLIDE 3: CTA ═══ -->
-  <section class="slide slide-cta" id="slide-2">
+  <!-- ═══ SLIDE 3: FORM ═══ -->
+  <section class="slide slide-form" id="slide-2">
+    <div class="orb-1"></div>
+    <div class="form-content anim-hidden" data-anim="fadeInUp">
+      <h2 class="form-title">¿Quieres <span class="accent">adelantar</span> el contacto?</h2>
+      <p class="form-subtitle">Tú mismo hazlo. Nosotros nos encargamos del resto.</p>
+
+      <form class="referral-form" action="https://formspree.io/f/TU_FORM_ID" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">Nombre del contacto *</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Juan Pérez">
+          </div>
+          <div class="form-group">
+            <label for="empresa">Compañía *</label>
+            <input type="text" id="empresa" name="empresa" required placeholder="Restaurante ABC">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="telefono">Teléfono *</label>
+            <input type="tel" id="telefono" name="telefono" required placeholder="+52 55 1234 5678">
+          </div>
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required placeholder="contacto@empresa.com">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pedidos">Estimado de pedidos/mes *</label>
+            <select id="pedidos" name="pedidos_mes" required>
+              <option value="" disabled selected>Selecciona un rango</option>
+              <option value="500-1000">500 - 1,000</option>
+              <option value="1000-3000">1,000 - 3,000</option>
+              <option value="3000-5000">3,000 - 5,000</option>
+              <option value="5000+">5,000+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="logistica">¿Cómo resuelve hoy su logística?</label>
+            <select id="logistica" name="logistica_actual">
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="flota_propia">Flota propia</option>
+              <option value="un_proveedor">Un solo proveedor (Uber, Rappi, etc.)</option>
+              <option value="varios_proveedores">Varios proveedores</option>
+              <option value="no_tiene">No tiene delivery</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div class="form-group">
+            <label for="comentario">Comentarios adicionales</label>
+            <textarea id="comentario" name="comentario" placeholder="Cualquier información relevante sobre el contacto o la empresa..."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="form-submit">Enviar Referido</button>
+      </form>
+
+      <p class="form-note">Tu información será enviada a nuestro equipo comercial para dar seguimiento.</p>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 4: CTA ═══ -->
+  <section class="slide slide-cta" id="slide-3">
     <div class="glow"></div>
     <div class="cta-content anim-hidden" data-anim="fadeInScale">
       <div class="cta-emoji">🎯</div>
