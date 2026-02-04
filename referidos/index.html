@@ -12,7 +12,6 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     html {
-      scroll-snap-type: y mandatory;
       scroll-behavior: smooth;
     }
 
@@ -20,7 +19,18 @@
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
       background: #FAFCFD;
       overflow-x: hidden;
+      overflow-y: hidden;
       -webkit-font-smoothing: antialiased;
+    }
+
+    .slides-container {
+      display: flex;
+      width: 400vw;
+      height: 100vh;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
     }
 
     ::-webkit-scrollbar { width: 0; }
@@ -64,11 +74,11 @@
     /* ── NAV DOTS ── */
     .nav-dots {
       position: fixed;
-      right: 24px;
-      top: 50%;
-      transform: translateY(-50%);
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       gap: 12px;
       z-index: 100;
     }
@@ -88,6 +98,8 @@
 
     /* ── SLIDES ── */
     .slide {
+      min-width: 100vw;
+      width: 100vw;
       height: 100vh;
       scroll-snap-align: start;
       display: flex;
@@ -97,6 +109,7 @@
       padding: 40px 24px;
       position: relative;
       overflow: hidden;
+      flex-shrink: 0;
     }
 
     /* ── SLIDE 1: HOOK ── */
@@ -178,18 +191,24 @@
     }
 
     .scroll-hint {
-      position: absolute; bottom: 32px; left: 50%;
+      position: absolute; bottom: 80px; left: 50%;
       transform: translateX(-50%);
-      display: flex; flex-direction: column;
-      align-items: center; gap: 6px; opacity: 0.4;
-      animation: float 2s ease infinite;
+      display: flex; flex-direction: row;
+      align-items: center; gap: 10px; opacity: 0.4;
     }
     .scroll-hint span:first-child {
       font-size: 11px; font-weight: 500;
       color: #4A4A5A; letter-spacing: 1px;
       text-transform: uppercase;
     }
-    .scroll-hint span:last-child { font-size: 18px; color: #4A4A5A; }
+    .scroll-hint span:last-child {
+      font-size: 18px; color: #4A4A5A;
+      animation: floatHorizontal 2s ease infinite;
+    }
+    @keyframes floatHorizontal {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(8px); }
+    }
 
     /* ── SLIDE 2: DEAL ── */
     .slide-deal { background: #FFFFFF; }
@@ -570,6 +589,8 @@
     <button class="nav-dot" data-slide="3" aria-label="Slide 4"></button>
   </div>
 
+  <div class="slides-container" id="slidesContainer">
+
   <!-- ═══ SLIDE 1: HOOK ═══ -->
   <section class="slide slide-hook" id="slide-0">
     <div class="orb-1"></div>
@@ -607,8 +628,8 @@
     </div>
 
     <div class="scroll-hint">
-      <span>Scroll</span>
-      <span>↓</span>
+      <span>Desliza</span>
+      <span>→</span>
     </div>
   </section>
 
@@ -811,6 +832,8 @@
     <div class="footer-brand">Picker Express</div>
   </section>
 
+  </div><!-- /slides-container -->
+
   <script>
     // ── Counter animation ──
     (function animateCounter() {
@@ -865,11 +888,13 @@
     // ── Nav dots ──
     const dots = document.querySelectorAll('.nav-dot');
     const slides = document.querySelectorAll('.slide');
+    const container = document.getElementById('slidesContainer');
 
     dots.forEach(dot => {
       dot.addEventListener('click', () => {
         const idx = dot.dataset.slide;
-        document.getElementById('slide-' + idx).scrollIntoView({ behavior: 'smooth' });
+        const slide = document.getElementById('slide-' + idx);
+        container.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
       });
     });
 
@@ -881,7 +906,7 @@
           document.querySelector(`.nav-dot[data-slide="${idx}"]`).classList.add('active');
         }
       });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.5, root: container });
 
     slides.forEach(s => slideObserver.observe(s));
 
