@@ -18,22 +18,24 @@
     body {
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
       background: #FAFCFD;
-      overflow-x: hidden;
-      overflow-y: hidden;
+      overflow: hidden;
       -webkit-font-smoothing: antialiased;
+      height: 100vh;
+      margin: 0;
     }
 
     .slides-container {
       display: flex;
-      width: 400vw;
       height: 100vh;
-      overflow-x: auto;
+      overflow-x: scroll;
       overflow-y: hidden;
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
     }
 
-    ::-webkit-scrollbar { width: 0; }
+    .slides-container::-webkit-scrollbar { display: none; }
+    .slides-container { -ms-overflow-style: none; scrollbar-width: none; }
 
     /* ── ANIMATIONS ── */
     @keyframes fadeInUp {
