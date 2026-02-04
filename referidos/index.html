@@ -629,13 +629,28 @@
       <p class="form-subtitle">Tú mismo hazlo. Nosotros nos encargamos del resto.</p>
 
       <form class="referral-form" id="referralForm" onsubmit="submitForm(event)">
+        <!-- Referidor -->
         <div class="form-row">
           <div class="form-group">
-            <label for="nombre">Nombre del contacto *</label>
+            <label for="referidor_nombre">Tu nombre (quien refiere) *</label>
+            <input type="text" id="referidor_nombre" name="referidor_nombre" required placeholder="Tu nombre">
+          </div>
+          <div class="form-group">
+            <label for="referidor_empresa">Tu compañía *</label>
+            <input type="text" id="referidor_empresa" name="referidor_empresa" required placeholder="Tu empresa">
+          </div>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid #E8EDF2; margin: 20px 0;">
+
+        <!-- Referido -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">Nombre del contacto referido *</label>
             <input type="text" id="nombre" name="nombre" required placeholder="Juan Pérez">
           </div>
           <div class="form-group">
-            <label for="empresa">Compañía *</label>
+            <label for="empresa">Compañía del referido *</label>
             <input type="text" id="empresa" name="empresa" required placeholder="Restaurante ABC">
           </div>
         </div>
@@ -843,6 +858,8 @@
       btn.disabled = true;
 
       const data = {
+        referidor_nombre: form.referidor_nombre.value,
+        referidor_empresa: form.referidor_empresa.value,
         nombre: form.nombre.value,
         empresa: form.empresa.value,
         telefono: form.telefono.value,
