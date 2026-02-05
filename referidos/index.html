@@ -596,15 +596,45 @@
 
     /* ── RESPONSIVE: MOBILE ── */
     @media (max-width: 600px) {
-      /* Nav dots - bigger touch targets */
+      /* CRITICAL: Enable vertical scrolling on mobile */
+      html, body {
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+      }
+      .slides-container {
+        flex-direction: column;
+        height: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scroll-snap-type: y mandatory;
+      }
+      .slide {
+        min-width: 100vw;
+        width: 100vw;
+        min-height: 100vh;
+        min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+        height: auto;
+        scroll-snap-align: start;
+        justify-content: flex-start;
+        padding-top: 40px;
+        overflow: visible;
+      }
+
+      /* Nav dots - reposition for vertical scroll */
       .nav-dots {
-        bottom: 24px;
-        gap: 16px;
+        bottom: auto;
+        top: 50%;
+        left: auto;
+        right: 12px;
+        transform: translateY(-50%);
+        flex-direction: column;
+        gap: 12px;
       }
       .nav-dot {
-        width: 10px;
-        height: 10px;
-        /* Bigger touch area */
+        width: 8px;
+        height: 8px;
         position: relative;
       }
       .nav-dot::before {
@@ -616,14 +646,8 @@
         bottom: -10px;
       }
       .nav-dot.active {
-        width: 14px;
-        height: 14px;
-      }
-
-      /* General slide adjustments */
-      .slide {
-        padding: 24px 16px;
-        padding-bottom: 80px;
+        width: 10px;
+        height: 10px;
       }
 
       /* Slide 1: Hook */
@@ -670,11 +694,21 @@
         padding: 0;
       }
       .scroll-hint {
-        bottom: 60px;
-        opacity: 0.6;
+        bottom: 24px;
+        opacity: 0.7;
+        flex-direction: column;
+        gap: 4px;
       }
       .scroll-hint span:first-child {
         font-size: 10px;
+      }
+      .scroll-hint span:last-child {
+        transform: rotate(90deg);
+        animation: floatVertical 2s ease infinite;
+      }
+      @keyframes floatVertical {
+        0%, 100% { transform: rotate(90deg) translateX(0); }
+        50% { transform: rotate(90deg) translateX(6px); }
       }
 
       /* Slide 2: Deal */
@@ -721,63 +755,80 @@
         font-size: 13px;
       }
 
-      /* Slide 3: Form */
+      /* Slide 3: Form - needs extra space for scrolling */
+      .slide-form {
+        padding-bottom: 60px;
+      }
       .form-content {
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 20px;
+      }
+      .form-left {
+        text-align: center;
       }
       .form-title {
-        font-size: clamp(24px, 7vw, 32px);
+        font-size: clamp(22px, 6vw, 28px);
         text-align: center;
+        margin-bottom: 8px;
       }
       .form-subtitle {
-        font-size: 14px;
+        font-size: 13px;
         text-align: center;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
       }
       .form-benefits {
         display: flex;
         flex-direction: row;
         justify-content: center;
-        gap: 8px;
-        margin-bottom: 8px;
+        gap: 6px;
+        margin-bottom: 4px;
+        flex-wrap: wrap;
       }
       .form-benefits li {
-        font-size: 12px;
+        font-size: 11px;
         margin-bottom: 0;
-        gap: 6px;
+        gap: 4px;
       }
       .form-benefits li span {
-        width: 22px;
-        height: 22px;
-        font-size: 11px;
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
       }
       .referral-form {
-        padding: 20px;
-        border-radius: 16px;
+        padding: 16px;
+        border-radius: 14px;
       }
       .form-row {
         grid-template-columns: 1fr;
-        gap: 12px;
-        margin-bottom: 12px;
+        gap: 10px;
+        margin-bottom: 10px;
       }
       .form-group label {
-        font-size: 12px;
+        font-size: 11px;
       }
       .form-group input,
       .form-group select,
       .form-group textarea {
-        padding: 12px 14px;
+        padding: 10px 12px;
         font-size: 14px;
-        border-radius: 10px;
+        border-radius: 8px;
+      }
+      .form-group textarea {
+        min-height: 60px;
       }
       .form-submit {
-        padding: 14px 24px;
-        font-size: 15px;
+        padding: 12px 20px;
+        font-size: 14px;
         border-radius: 10px;
+        margin-top: 4px;
       }
       .form-note {
-        font-size: 11px;
+        font-size: 10px;
+        margin-top: 10px;
+      }
+      /* Hide separator line on mobile */
+      .referral-form hr {
+        margin: 12px 0;
       }
 
       /* Slide 4: CTA */
@@ -827,28 +878,58 @@
     /* ── RESPONSIVE: VERY SMALL ── */
     @media (max-width: 380px) {
       .slide {
-        padding: 20px 12px;
-        padding-bottom: 70px;
+        padding: 16px 10px;
+        padding-top: 32px;
       }
       .headline {
-        font-size: 28px;
+        font-size: 26px;
+      }
+      .subheadline {
+        font-size: 16px;
+        margin-bottom: 24px;
       }
       .step {
-        max-width: 180px;
-        padding: 10px 16px;
+        max-width: 170px;
+        padding: 8px 14px;
+      }
+      .step-icon {
+        font-size: 24px;
+      }
+      .step-label {
+        font-size: 12px;
       }
       .deal-card {
-        padding: 16px;
+        padding: 14px;
+      }
+      .deal-card__title {
+        font-size: 14px;
+      }
+      .deal-card__desc {
+        font-size: 12px;
       }
       .conditions {
-        padding: 16px;
+        padding: 14px;
+      }
+      .check-text {
+        font-size: 12px;
       }
       .referral-form {
-        padding: 16px;
+        padding: 12px;
+      }
+      .form-title {
+        font-size: 20px;
+      }
+      .form-subtitle {
+        font-size: 12px;
       }
       .form-benefits {
-        flex-direction: column;
-        align-items: center;
+        display: none;
+      }
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        padding: 10px;
+        font-size: 13px;
       }
     }
   </style>
@@ -1164,25 +1245,51 @@
     const slides = document.querySelectorAll('.slide');
     const container = document.getElementById('slidesContainer');
 
+    // Detect mobile (vertical scroll) vs desktop (horizontal scroll)
+    function isMobile() {
+      return window.innerWidth <= 600;
+    }
+
     dots.forEach(dot => {
       dot.addEventListener('click', () => {
         const idx = dot.dataset.slide;
         const slide = document.getElementById('slide-' + idx);
-        container.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
+        if (isMobile()) {
+          // Vertical scroll on mobile
+          slide.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          // Horizontal scroll on desktop
+          container.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
+        }
       });
     });
 
-    const slideObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const idx = entry.target.id.replace('slide-', '');
-          dots.forEach(d => d.classList.remove('active'));
-          document.querySelector(`.nav-dot[data-slide="${idx}"]`).classList.add('active');
-        }
-      });
-    }, { threshold: 0.5, root: container });
+    // Use different observer root for mobile vs desktop
+    function createSlideObserver() {
+      return new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const idx = entry.target.id.replace('slide-', '');
+            dots.forEach(d => d.classList.remove('active'));
+            document.querySelector(`.nav-dot[data-slide="${idx}"]`).classList.add('active');
+          }
+        });
+      }, { threshold: 0.5, root: isMobile() ? null : container });
+    }
 
+    let slideObserver = createSlideObserver();
     slides.forEach(s => slideObserver.observe(s));
+
+    // Recreate observer on resize (in case orientation changes)
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        slideObserver.disconnect();
+        slideObserver = createSlideObserver();
+        slides.forEach(s => slideObserver.observe(s));
+      }, 250);
+    });
 
     // ── Terms toggle ──
     function toggleTerms() {
