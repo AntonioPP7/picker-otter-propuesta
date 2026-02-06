@@ -198,18 +198,27 @@
       display: flex; flex-direction: row;
       align-items: center; gap: 10px; opacity: 0.4;
     }
-    .scroll-hint span:first-child {
+    .scroll-hint__text-h,
+    .scroll-hint__arrow-h {
       font-size: 11px; font-weight: 500;
       color: #4A4A5A; letter-spacing: 1px;
       text-transform: uppercase;
     }
-    .scroll-hint span:last-child {
-      font-size: 18px; color: #4A4A5A;
+    .scroll-hint__arrow-h {
+      font-size: 18px;
       animation: floatHorizontal 2s ease infinite;
+    }
+    .scroll-hint__text-v,
+    .scroll-hint__arrow-v {
+      display: none;
     }
     @keyframes floatHorizontal {
       0%, 100% { transform: translateX(0); }
       50% { transform: translateX(8px); }
+    }
+    @keyframes floatVertical {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
     }
 
     /* ── SLIDE 2: DEAL ── */
@@ -608,47 +617,21 @@
         height: auto;
         overflow-x: hidden;
         overflow-y: auto;
-        scroll-snap-type: y mandatory;
+        scroll-snap-type: none;
       }
       .slide {
         min-width: 100vw;
         width: 100vw;
         min-height: 100vh;
-        min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+        min-height: 100dvh;
         height: auto;
-        scroll-snap-align: start;
+        scroll-snap-align: none;
         justify-content: flex-start;
-        padding-top: 40px;
+        padding-top: 56px;
         overflow: visible;
       }
 
-      /* Nav dots - reposition for vertical scroll */
-      .nav-dots {
-        bottom: auto;
-        top: 50%;
-        left: auto;
-        right: 12px;
-        transform: translateY(-50%);
-        flex-direction: column;
-        gap: 12px;
-      }
-      .nav-dot {
-        width: 8px;
-        height: 8px;
-        position: relative;
-      }
-      .nav-dot::before {
-        content: '';
-        position: absolute;
-        top: -10px;
-        left: -10px;
-        right: -10px;
-        bottom: -10px;
-      }
-      .nav-dot.active {
-        width: 10px;
-        height: 10px;
-      }
+      /* Nav dots hidden on mobile - replaced by .mobile-nav */
 
       /* Slide 1: Hook */
       .badge {
@@ -697,18 +680,25 @@
         bottom: 24px;
         opacity: 0.7;
         flex-direction: column;
-        gap: 4px;
+        gap: 6px;
       }
-      .scroll-hint span:first-child {
-        font-size: 10px;
+      .scroll-hint__text-h,
+      .scroll-hint__arrow-h {
+        display: none;
       }
-      .scroll-hint span:last-child {
-        transform: rotate(90deg);
+      .scroll-hint__text-v {
+        display: block;
+        font-size: 11px;
+        font-weight: 500;
+        color: #4A4A5A;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .scroll-hint__arrow-v {
+        display: block;
+        font-size: 20px;
+        color: #4A4A5A;
         animation: floatVertical 2s ease infinite;
-      }
-      @keyframes floatVertical {
-        0%, 100% { transform: rotate(90deg) translateX(0); }
-        50% { transform: rotate(90deg) translateX(6px); }
       }
 
       /* Slide 2: Deal */
@@ -755,8 +745,15 @@
         font-size: 13px;
       }
 
-      /* Slide 3: Form - needs extra space for scrolling */
+      /* Slide 3: Form - natural height, no forced viewport */
       .slide-form {
+        min-height: auto;
+        padding-top: 56px;
+        padding-bottom: 80px;
+      }
+      /* Slide 4: CTA - comfortable but not forced */
+      .slide-cta {
+        min-height: 90dvh;
         padding-bottom: 60px;
       }
       .form-content {
@@ -795,36 +792,40 @@
         font-size: 10px;
       }
       .referral-form {
-        padding: 16px;
-        border-radius: 14px;
+        padding: 20px;
+        border-radius: 16px;
       }
       .form-row {
         grid-template-columns: 1fr;
-        gap: 10px;
-        margin-bottom: 10px;
+        gap: 14px;
+        margin-bottom: 14px;
       }
       .form-group label {
-        font-size: 11px;
+        font-size: 12px;
       }
       .form-group input,
-      .form-group select,
-      .form-group textarea {
-        padding: 10px 12px;
-        font-size: 14px;
-        border-radius: 8px;
+      .form-group select {
+        padding: 14px 16px;
+        font-size: 16px;
+        border-radius: 10px;
+        min-height: 48px;
       }
       .form-group textarea {
-        min-height: 60px;
+        padding: 14px 16px;
+        font-size: 16px;
+        border-radius: 10px;
+        min-height: 80px;
       }
       .form-submit {
-        padding: 12px 20px;
-        font-size: 14px;
-        border-radius: 10px;
-        margin-top: 4px;
+        padding: 16px 24px;
+        font-size: 16px;
+        border-radius: 12px;
+        margin-top: 8px;
+        min-height: 52px;
       }
       .form-note {
-        font-size: 10px;
-        margin-top: 10px;
+        font-size: 11px;
+        margin-top: 12px;
       }
       /* Hide separator line on mobile */
       .referral-form hr {
@@ -875,6 +876,85 @@
       }
     }
 
+    /* ── MOBILE NAV & FAB ── */
+    .mobile-nav {
+      display: none;
+    }
+    .mobile-fab {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .nav-dots { display: none; }
+      .mobile-nav {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(0,0,0,0.06);
+        padding: 0;
+        gap: 0;
+      }
+      .mobile-nav__tab {
+        flex: 1;
+        background: none;
+        border: none;
+        padding: 14px 4px;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        color: #9CA3AF;
+        cursor: pointer;
+        position: relative;
+        transition: color 0.25s ease;
+        white-space: nowrap;
+      }
+      .mobile-nav__tab.active {
+        color: #00B4D8;
+      }
+      .mobile-nav__tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 20%;
+        right: 20%;
+        height: 2.5px;
+        background: #00B4D8;
+        border-radius: 2px;
+      }
+      .mobile-fab {
+        display: block;
+        position: fixed;
+        bottom: 20px;
+        right: 16px;
+        z-index: 150;
+        background: linear-gradient(135deg, #00B4D8 0%, #0096B4 100%);
+        color: white;
+        border: none;
+        padding: 14px 24px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        box-shadow: 0 4px 20px rgba(0,180,216,0.4);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        opacity: 0;
+        transform: translateY(20px);
+        pointer-events: none;
+      }
+      .mobile-fab.visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+    }
+
     /* ── RESPONSIVE: VERY SMALL ── */
     @media (max-width: 380px) {
       .slide {
@@ -914,7 +994,7 @@
         font-size: 12px;
       }
       .referral-form {
-        padding: 12px;
+        padding: 16px;
       }
       .form-title {
         font-size: 20px;
@@ -928,21 +1008,35 @@
       .form-group input,
       .form-group select,
       .form-group textarea {
-        padding: 10px;
-        font-size: 13px;
+        padding: 12px 14px;
+        font-size: 16px;
+        min-height: 48px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation Dots -->
+  <!-- Navigation Dots (desktop) -->
   <div class="nav-dots">
     <button class="nav-dot active" data-slide="0" aria-label="Slide 1"></button>
     <button class="nav-dot" data-slide="1" aria-label="Slide 2"></button>
     <button class="nav-dot" data-slide="2" aria-label="Slide 3"></button>
     <button class="nav-dot" data-slide="3" aria-label="Slide 4"></button>
   </div>
+
+  <!-- Mobile sticky nav -->
+  <nav class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav__tab active" data-slide="0">Inicio</button>
+    <button class="mobile-nav__tab" data-slide="1">Deal</button>
+    <button class="mobile-nav__tab" data-slide="2">Formulario</button>
+    <button class="mobile-nav__tab" data-slide="3">Agendar</button>
+  </nav>
+
+  <!-- Mobile floating CTA -->
+  <button class="mobile-fab" id="mobileFab" onclick="(function(){var s=document.getElementById('slide-2');var n=document.getElementById('mobileNav');var y=s.getBoundingClientRect().top+window.pageYOffset-(n?n.offsetHeight:0);window.scrollTo({top:y,behavior:'smooth'})})()">
+    Referir ahora
+  </button>
 
   <div class="slides-container" id="slidesContainer">
 
@@ -983,8 +1077,10 @@
     </div>
 
     <div class="scroll-hint">
-      <span>Desliza</span>
-      <span>→</span>
+      <span class="scroll-hint__text-h">Desliza</span>
+      <span class="scroll-hint__arrow-h">→</span>
+      <span class="scroll-hint__text-v">Desliza hacia abajo</span>
+      <span class="scroll-hint__arrow-v">↓</span>
     </div>
   </section>
 
@@ -1240,47 +1336,65 @@
       }
     });
 
-    // ── Nav dots ──
+    // ── Nav dots & mobile nav ──
     const dots = document.querySelectorAll('.nav-dot');
+    const mobileTabs = document.querySelectorAll('.mobile-nav__tab');
     const slides = document.querySelectorAll('.slide');
     const container = document.getElementById('slidesContainer');
 
-    // Detect mobile (vertical scroll) vs desktop (horizontal scroll)
     function isMobile() {
       return window.innerWidth <= 600;
     }
 
+    // Desktop dots click
     dots.forEach(dot => {
       dot.addEventListener('click', () => {
         const idx = dot.dataset.slide;
         const slide = document.getElementById('slide-' + idx);
         if (isMobile()) {
-          // Vertical scroll on mobile
           slide.scrollIntoView({ behavior: 'smooth' });
         } else {
-          // Horizontal scroll on desktop
           container.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
         }
       });
     });
 
-    // Use different observer root for mobile vs desktop
+    // Mobile tabs click
+    mobileTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const idx = tab.dataset.slide;
+        const slide = document.getElementById('slide-' + idx);
+        const navHeight = document.getElementById('mobileNav').offsetHeight;
+        const y = slide.getBoundingClientRect().top + window.pageYOffset - navHeight;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      });
+    });
+
+    // Update active indicators on scroll
+    function updateActiveNav(idx) {
+      dots.forEach(d => d.classList.remove('active'));
+      const activeDot = document.querySelector(`.nav-dot[data-slide="${idx}"]`);
+      if (activeDot) activeDot.classList.add('active');
+
+      mobileTabs.forEach(t => t.classList.remove('active'));
+      const activeTab = document.querySelector(`.mobile-nav__tab[data-slide="${idx}"]`);
+      if (activeTab) activeTab.classList.add('active');
+    }
+
     function createSlideObserver() {
       return new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const idx = entry.target.id.replace('slide-', '');
-            dots.forEach(d => d.classList.remove('active'));
-            document.querySelector(`.nav-dot[data-slide="${idx}"]`).classList.add('active');
+            updateActiveNav(idx);
           }
         });
-      }, { threshold: 0.5, root: isMobile() ? null : container });
+      }, { threshold: isMobile() ? 0.2 : 0.5, root: isMobile() ? null : container });
     }
 
     let slideObserver = createSlideObserver();
     slides.forEach(s => slideObserver.observe(s));
 
-    // Recreate observer on resize (in case orientation changes)
     let resizeTimeout;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimeout);
@@ -1290,6 +1404,40 @@
         slides.forEach(s => slideObserver.observe(s));
       }, 250);
     });
+
+    // ── Mobile FAB visibility ──
+    (function() {
+      const fab = document.getElementById('mobileFab');
+      const hookSlide = document.getElementById('slide-0');
+      const formSlide = document.getElementById('slide-2');
+      if (!fab) return;
+
+      const fabObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          // Hide FAB when hook slide is mostly visible or when form slide is visible
+          if (entry.target === hookSlide && entry.isIntersecting) {
+            fab.classList.remove('visible');
+          } else if (entry.target === hookSlide && !entry.isIntersecting) {
+            // Check if form is in view
+            const formRect = formSlide.getBoundingClientRect();
+            const formVisible = formRect.top < window.innerHeight && formRect.bottom > 0;
+            if (!formVisible) fab.classList.add('visible');
+          }
+          if (entry.target === formSlide) {
+            if (entry.isIntersecting) {
+              fab.classList.remove('visible');
+            } else {
+              const hookRect = hookSlide.getBoundingClientRect();
+              const hookVisible = hookRect.top < window.innerHeight && hookRect.bottom > 0;
+              if (!hookVisible) fab.classList.add('visible');
+            }
+          }
+        });
+      }, { threshold: 0.3 });
+
+      fabObserver.observe(hookSlide);
+      fabObserver.observe(formSlide);
+    })();
 
     // ── Terms toggle ──
     function toggleTerms() {
